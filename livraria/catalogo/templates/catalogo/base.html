@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livraria Online</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link para possíveis estilos CSS -->
+</head>
+<body>
+    <header>
+        <h1>Livraria Online</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'buscar_livros' %}">Catálogo</a></li>
+                <li><a href="{% url 'ver_carrinho' %}">Carrinho</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Registrar-se</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        <!-- Conteúdo das páginas será inserido aqui -->
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Livraria Online</p>
+    </footer>
+</body>
+</html>
