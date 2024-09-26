@@ -1,16 +1,29 @@
-<h1>Resultados da Busca</h1>
-<form method="get">
-    <input type="text" name="query" placeholder="Buscar livros..." value="{{ request.GET.query }}">
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+<h2>Catálogo de Livros</h2>
+<form method="GET" action="{% url 'buscar_livros' %}">
+    <input type="text" name="query" placeholder="Buscar por título ou autor">
     <button type="submit">Buscar</button>
 </form>
-
-<ul>
-{% for livro in livros %}
-    <li>
-        <h2>{{ livro.volumeInfo.title }}</h2>
-        <p>Autor: {{ livro.volumeInfo.authors.0 }}</p>
-        <p>Categoria: {{ livro.volumeInfo.categories.0 }}</p>
-        <img src="{{ livro.volumeInfo.imageLinks.thumbnail }}" alt="{{ livro.volumeInfo.title }}">
-    </li>
-{% endfor %}
-</ul>
+{% if livros %}
+    <ul>
+    {% for livro in livros %}
+        <li>
+            <h3>{{ livro.volumeInfo.title }}</h3>
+            <p>Autor: {{ livro.volumeInfo.authors|join:", " }}</p>
+            <p>Categoria: {{ livro.volumeInfo.categories|join:", " }}</p>
+            <p>Data de Publicação: {{ livro.volumeInfo.publishedDate }}</p>
+            <form action="{% url 'adicionar_ao_carrinho' livro.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="titulo" value="{{ livro.volumeInfo.title }}">
+                <input type="number" name="quantidade" min="1" value="1">
+                <button type="submit">Adicionar ao Carrinho</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhum livro encontrado.</p>
+{% endif %}
+{% endblock %}
