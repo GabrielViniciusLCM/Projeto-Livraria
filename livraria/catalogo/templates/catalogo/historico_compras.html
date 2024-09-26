@@ -1,0 +1,27 @@
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+<h1>Histórico de Compras</h1>
+{% if pedidos %}
+    <table>
+        <tr>
+            <th>Data do Pedido</th>
+            <th>Livros</th>
+        </tr>
+        {% for pedido in pedidos %}
+        <tr>
+            <td>{{ pedido.data_pedido }}</td>
+            <td>
+                <ul>
+                {% for item in pedido.itens.all %}
+                    <li>{{ item.titulo }} (Quantidade: {{ item.quantidade }})</li>
+                {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>Você ainda não realizou nenhuma compra.</p>
+{% endif %}
+{% endblock %}

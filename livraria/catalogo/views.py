@@ -81,6 +81,11 @@ def finalizar_compra(request):
     
     return redirect('buscar_livros')
 
+@login_required
+def historico_compras(request):
+    pedidos = Pedido.objects.filter(usuario=request.user).order_by('-data_pedido')
+    return render(request, 'catalogo/historico_compras.html', {'pedidos': pedidos})
+
 
 # autenticação
 def registro(request):

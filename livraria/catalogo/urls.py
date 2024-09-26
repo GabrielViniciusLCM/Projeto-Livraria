@@ -10,4 +10,5 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('finalizar-compra/', views.finalizar_compra, name='finalizar_compra'),
+    path('historico-compras/', views.historico_compras, name='historico_compras'),
 ]

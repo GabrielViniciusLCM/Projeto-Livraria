@@ -12,12 +12,13 @@
         <nav>
             <ul>
                 <li><a href="{% url 'buscar_livros' %}">Catálogo</a></li>
-                <li><a href="{% url 'ver_carrinho' %}">Carrinho</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'ver_carrinho' %}">Carrinho</a></li>
+                    <li><a href="{% url 'historico_compras' %}">Histórico de Compras</a></li>
+                    <li><a href="{% url 'logout' %}">Sair</a></li>
                 {% else %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'signup' %}">Registrar-se</a></li>
+                    <li><a href="{% url 'login' %}">Entrar</a></li>
+                    <li><a href="{% url 'registro' %}">Registrar</a></li>
                 {% endif %}
             </ul>
         </nav>
