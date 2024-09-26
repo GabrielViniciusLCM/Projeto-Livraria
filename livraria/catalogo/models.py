@@ -31,3 +31,11 @@ class Carrinho(models.Model):
 
     def __str__(self):
         return f'Carrinho de {self.usuario.username}'
+    
+class Pedido(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    itens = models.ManyToManyField(ItemCarrinho)
+    data_pedido = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Pedido #{self.id} - {self.usuario.username} - {self.data_pedido}'

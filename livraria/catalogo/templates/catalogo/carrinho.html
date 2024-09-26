@@ -22,6 +22,7 @@
         </tr>
         {% endfor %}
     </table>
+    <a href="{% url 'finalizar_compra' %}">Finalizar Compra</a> <!-- Adicionado -->
 {% else %}
     <p>Seu carrinho está vazio.</p>
 {% endif %}

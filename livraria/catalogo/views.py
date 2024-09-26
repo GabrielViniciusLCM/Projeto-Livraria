@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Carrinho, ItemCarrinho
+from .models import Carrinho, ItemCarrinho, Pedido
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistroUsuarioForm
 from django.contrib import messages
+
 
 def buscar_livros(request):
     query = request.GET.get('query', '')
@@ -62,6 +63,23 @@ def remover_item(request, item_id):
     item.delete()
     messages.success(request, f'O livro "{item.titulo}" foi removido do seu carrinho.')
     return redirect('ver_carrinho')
+
+@login_required
+def finalizar_compra(request):
+    carrinho = Carrinho.objects.filter(usuario=request.user).first()
+    if carrinho and carrinho.itens.exists():
+        # Crie um pedido baseado no carrinho
+        pedido = Pedido.objects.create(usuario=request.user)
+        for item in carrinho.itens.all():
+            pedido.itens.add(item)
+        
+        # Limpe o carrinho após finalizar a compra
+        carrinho.itens.clear()
+        messages.success(request, 'Compra realizada com sucesso! Obrigado por comprar conosco.')
+    else:
+        messages.error(request, 'Seu carrinho está vazio.')
+    
+    return redirect('buscar_livros')
 
 
 # autenticação
