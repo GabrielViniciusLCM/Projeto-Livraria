@@ -1,0 +1,16 @@
+<h1>Resultados da Busca</h1>
+<form method="get">
+    <input type="text" name="query" placeholder="Buscar livros..." value="{{ request.GET.query }}">
+    <button type="submit">Buscar</button>
+</form>
+
+<ul>
+{% for livro in livros %}
+    <li>
+        <h2>{{ livro.volumeInfo.title }}</h2>
+        <p>Autor: {{ livro.volumeInfo.authors.0 }}</p>
+        <p>Categoria: {{ livro.volumeInfo.categories.0 }}</p>
+        <img src="{{ livro.volumeInfo.imageLinks.thumbnail }}" alt="{{ livro.volumeInfo.title }}">
+    </li>
+{% endfor %}
+</ul>
