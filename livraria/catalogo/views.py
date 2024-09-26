@@ -4,6 +4,10 @@ from .models import Carrinho, ItemCarrinho
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import RegistroUsuarioForm
+from django.contrib import messages
 
 def buscar_livros(request):
     query = request.GET.get('query', '')
@@ -14,6 +18,9 @@ def buscar_livros(request):
 
     return render(request, 'catalogo/lista_livros.html', {'livros': livros})
 
+
+
+# carrinho
 def adicionar_ao_carrinho(request, livro_id):
     if request.method == 'POST':
         if not request.user.is_authenticated:
@@ -55,3 +62,41 @@ def remover_item(request, item_id):
     item.delete()
     messages.success(request, f'O livro "{item.titulo}" foi removido do seu carrinho.')
     return redirect('ver_carrinho')
+
+
+# autenticação
+def registro(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f'Bem-vindo, {user.username}! Sua conta foi criada com sucesso.')
+            return redirect('buscar_livros')
+    else:
+        form = RegistroUsuarioForm()
+    return render(request, 'catalogo/registro.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f'Você está logado como {username}.')
+                return redirect('buscar_livros')
+            else:
+                messages.error(request, 'Usuário ou senha incorretos.')
+        else:
+            messages.error(request, 'Erro no formulário. Verifique os dados e tente novamente.')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'catalogo/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, 'Você saiu do sistema.')
+    return redirect('buscar_livros')
