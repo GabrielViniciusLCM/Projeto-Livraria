@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('finalizar-compra/', views.finalizar_compra, name='finalizar_compra'),
     path('historico-compras/', views.historico_compras, name='historico_compras'),
+    path('historico-compras/pdf/', views.exportar_historico_pdf, name='exportar_historico_pdf'),
 ]

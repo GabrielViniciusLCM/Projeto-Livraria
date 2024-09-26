@@ -21,6 +21,7 @@
         </tr>
         {% endfor %}
     </table>
+    <a href="{% url 'exportar_historico_pdf' %}">Exportar Histórico em PDF</a>
 {% else %}
     <p>Você ainda não realizou nenhuma compra.</p>
 {% endif %}

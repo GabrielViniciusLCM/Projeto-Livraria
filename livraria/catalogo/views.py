@@ -8,6 +8,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistroUsuarioForm
 from django.contrib import messages
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
 
 
 def buscar_livros(request):
@@ -86,6 +89,27 @@ def historico_compras(request):
     pedidos = Pedido.objects.filter(usuario=request.user).order_by('-data_pedido')
     return render(request, 'catalogo/historico_compras.html', {'pedidos': pedidos})
 
+@login_required
+def exportar_historico_pdf(request):
+    pedidos = Pedido.objects.filter(usuario=request.user).order_by('-data_pedido')
+    template_path = 'catalogo/historico_pdf.html'
+    context = {'pedidos': pedidos}
+    
+    # Renderiza o template como uma string
+    html = render_to_string(template_path, context)
+    
+    # Cria uma resposta HTTP com o PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="historico_compras.pdf"'
+    
+    # Converte o HTML em PDF usando o xhtml2pdf
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    # Verifica se houve algum erro ao gerar o PDF
+    if pisa_status.err:
+        return HttpResponse('Erro ao gerar o PDF', status=400)
+    
+    return response
 
 # autenticação
 def registro(request):
