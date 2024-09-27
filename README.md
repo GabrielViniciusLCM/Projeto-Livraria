@@ -9,7 +9,6 @@ Antes de executar o projeto, verifique se você tem os seguintes softwares insta
 - [Python 3.x](https://www.python.org/downloads/)
 - [pip](https://pip.pypa.io/en/stable/installation/)
 - [PostgreSQL](https://www.postgresql.org/download/) ou [MySQL](https://dev.mysql.com/downloads/)
-- [Node.js](https://nodejs.org/en/download/) (opcional, caso use pacotes npm)
 
 ## Passo a Passo
 
