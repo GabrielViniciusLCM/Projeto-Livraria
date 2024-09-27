@@ -1,16 +1,28 @@
 {% extends 'catalogo/base.html' %}
 
 {% block content %}
-<h2>Detalhes do Livro</h2>
-<div>
-    <img src="{{ detalhes.capa }}" alt="Capa do livro {{ detalhes.titulo }}" style="width:200px;">
-    <h3>{{ detalhes.titulo }}</h3>
-    <p><strong>Autores:</strong> {{ detalhes.autores|join:", " }}</p>
-    <p><strong>Categoria:</strong> {{ detalhes.categorias|join:", " }}</p>
-    <p><strong>Data de Publicação:</strong> {{ detalhes.data_publicacao }}</p>
-    <p><strong>Páginas:</strong> {{ detalhes.paginas }}</p>
-    <p><strong>Publicadora:</strong> {{ detalhes.publicadora }}</p>
-    <p><strong>Sinopse:</strong> {{ detalhes.descricao }}</p>
-    <a href="{% url 'buscar_livros' %}">Voltar ao Catálogo</a>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ detalhes.capa }}" alt="Capa do livro {{ detalhes.titulo }}" class="img-fluid mb-3">
+        </div>
+        <div class="col-md-8">
+            <h3>{{ detalhes.titulo }}</h3>
+            <p><strong>Autores:</strong> {{ detalhes.autores|join:", " }}</p>
+            <p><strong>Categoria:</strong> {{ detalhes.categorias|join:", " }}</p>
+            <p><strong>Data de Publicação:</strong> {{ detalhes.data_publicacao }}</p>
+            <p><strong>Páginas:</strong> {{ detalhes.paginas }}</p>
+            <p><strong>Publicadora:</strong> {{ detalhes.publicadora }}</p>
+            <p><strong>Sinopse:</strong></p>
+            <p class="text-justify">{{ detalhes.descricao }}</p>
+            <button class="btn btn-secondary mt-3" onClick="history_back()">Voltar ao Catálogo</button>
+        </div>
+    </div>
 </div>
+
+<script>
+    function history_back() {
+        window.history.back();
+    } 
+</script>
 {% endblock %}

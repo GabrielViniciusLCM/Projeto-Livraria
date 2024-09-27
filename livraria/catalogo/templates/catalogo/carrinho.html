@@ -25,8 +25,10 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table> 
+
     <div class="text-right">
+        <a href="{% url 'buscar_livros' %}" class="btn btn-secondary">Voltar ao Catálogo</a>
         <a href="{% url 'finalizar_compra' %}" class="btn btn-primary">Finalizar Compra</a>
     </div>
 {% else %}
