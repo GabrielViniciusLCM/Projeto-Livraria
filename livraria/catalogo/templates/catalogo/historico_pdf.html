@@ -3,10 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { font-family: Arial, sans-serif; }
-        table { width: 100%; border-collapse: collapse; }
-        table, th, td { border: 1px solid black; }
-        th, td { padding: 10px; text-align: left; }
+        /* Definições básicas */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5; /* Fundo cinza-claro */
+        }
+
+        h1 {
+            color: #2e59d9; /* Azul para o título */
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff; /* Fundo branco para a tabela */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #4e73df; /* Fundo azul para o cabeçalho */
+            color: white;
+            font-size: 18px;
+            text-transform: uppercase;
+            padding: 12px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Fundo alternado */
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        li {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #e9ecef; /* Fundo cinza para os itens */
+            border-radius: 5px;
+        }
+
+        .quantidade {
+            background-color: #4e73df; /* Cor do badge */
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        p {
+            text-align: center;
+            color: #6c757d;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -19,11 +83,14 @@
             </tr>
             {% for pedido in pedidos %}
             <tr>
-                <td>{{ pedido.data_pedido }}</td>
+                <td>{{ pedido.data_pedido|date:"d/m/Y H:i" }}</td>
                 <td>
                     <ul>
                     {% for item in pedido.itens.all %}
-                        <li>{{ item.titulo }} (Quantidade: {{ item.quantidade }})</li>
+                        <li>
+                            {{ item.titulo }} 
+                            <span class="quantidade">Quantidade: {{ item.quantidade }}</span>
+                        </li>
                     {% endfor %}
                     </ul>
                 </td>

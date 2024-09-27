@@ -1,39 +1,49 @@
 {% extends 'catalogo/base.html' %}
 
 {% block content %}
-<h2>Catálogo de Livros</h2>
-<form method="GET" action="{% url 'buscar_livros' %}">
-    <input type="text" name="query" placeholder="Buscar por título, autor ou categoria">
-    <select name="filtro">
-        <option value="titulo">Título</option>
-        <option value="autor">Autor</option>
-        <option value="categoria">Categoria</option>
-    </select>
-    <button type="submit">Buscar</button>
+<h2 class="text-center mb-4">Catálogo de Livros</h2>
+<form class="form-inline justify-content-center mb-4" method="GET" action="{% url 'buscar_livros' %}">
+    <div class="form-group mx-sm-3 mb-2">
+        <select class="form-control" name="filtro">
+            <option value="titulo">Título</option>
+            <option value="autor">Autor</option>
+            <option value="categoria">Categoria</option>
+        </select>
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" name="query" placeholder="Buscar...">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Buscar</button>
 </form>
 
 {% if livros %}
-    <ul>
-    {% for livro in livros %}
-        <li>
-            <h3>{{ livro.volumeInfo.title }}</h3>
-            <img src="{{ livro.volumeInfo.imageLinks.thumbnail }}" alt="Capa do livro">
-            <p>Autor: {{ livro.volumeInfo.authors|join:", " }}</p>
-            <p>Categoria: {{ livro.volumeInfo.categories|join:", " }}</p>
-            <p>Data de Publicação: {{ livro.volumeInfo.publishedDate }}</p>
-            <p>
-                <a href="{% url 'detalhes_livro' livro.id %}">Ver detalhes</a>
-            </p>
-            <form action="{% url 'adicionar_ao_carrinho' livro.id %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="titulo" value="{{ livro.volumeInfo.title }}">
-                <input type="number" name="quantidade" min="1" value="1">
-                <button type="submit">Adicionar ao Carrinho</button>
-            </form>
-        </li>
-    {% endfor %}
-    </ul>
+    <div class="row">
+        {% for livro in livros %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ livro.volumeInfo.imageLinks.thumbnail }}" class="card-img-top" alt="{{ livro.volumeInfo.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ livro.volumeInfo.title }}</h5>
+                    <p class="card-text">
+                        <strong>Autor:</strong> {{ livro.volumeInfo.authors|join:", " }}<br>
+                        <strong>Categoria:</strong> {{ livro.volumeInfo.categories|join:", " }}<br>
+                        <strong>Data de Publicação:</strong> {{ livro.volumeInfo.publishedDate }}
+                    </p>
+                    <form action="{% url 'adicionar_ao_carrinho' livro.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="titulo" value="{{ livro.volumeInfo.title }}">
+                        <div class="form-group">
+                            <input type="number" name="quantidade" min="1" value="1" class="form-control" style="width: 80px; display: inline;">
+                            <button type="submit" class="btn btn-success">Adicionar ao Carrinho</button>
+                        </div>
+                    </form>
+                    <a href="{% url 'detalhes_livro' livro.id %}" class="btn btn-info">Ver Detalhes</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 {% else %}
-    <p>Inicie uma busca para visualizar os livros disponíveis.</p>
+    <p class="text-center">Nenhum livro encontrado.</p>
 {% endif %}
 {% endblock %}

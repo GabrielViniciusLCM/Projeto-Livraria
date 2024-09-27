@@ -4,25 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livraria Online</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Livraria Online</h1>
-        <nav>
-            <ul>
-                <li><a href="{% url 'buscar_livros' %}">Catálogo</a></li>
-                {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'ver_carrinho' %}">Carrinho</a></li>
-                    <li><a href="{% url 'historico_compras' %}">Histórico de Compras</a></li>
-                    <li><a href="{% url 'logout' %}">Sair</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Entrar</a></li>
-                    <li><a href="{% url 'registro' %}">Registrar</a></li>
-                {% endif %}
-            </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'buscar_livros' %}">Livraria Online</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'buscar_livros' %}">Catálogo</a></li>
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'ver_carrinho' %}">Carrinho</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'historico_compras' %}">Histórico de Compras</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Entrar</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'registro' %}">Registrar</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
-    <main>
+    <main class="container">
         {% block content %}
         <!-- Conteúdo das páginas será inserido aqui -->
         {% endblock %}
@@ -30,5 +63,10 @@
     <footer>
         <p>&copy; 2024 Livraria Online</p>
     </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

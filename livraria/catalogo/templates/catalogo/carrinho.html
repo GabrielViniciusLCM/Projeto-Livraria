@@ -1,29 +1,35 @@
 {% extends 'catalogo/base.html' %}
 
 {% block content %}
-<h1>Seu Carrinho de Compras</h1>
+<h2 class="text-center mb-4">Seu Carrinho de Compras</h2>
 {% if itens %}
-    <table>
-        <tr>
-            <th>Título</th>
-            <th>Quantidade</th>
-            <th>Ação</th>
-        </tr>
-        {% for item in itens %}
-        <tr>
-            <td>{{ item.titulo }}</td>
-            <td>{{ item.quantidade }}</td>
-            <td>
-                <form action="{% url 'remover_item' item.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Remover</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Quantidade</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.titulo }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>
+                    <form action="{% url 'remover_item' item.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-    <a href="{% url 'finalizar_compra' %}">Finalizar Compra</a> <!-- Adicionado -->
+    <div class="text-right">
+        <a href="{% url 'finalizar_compra' %}" class="btn btn-primary">Finalizar Compra</a>
+    </div>
 {% else %}
-    <p>Seu carrinho está vazio.</p>
+    <p class="text-center">Seu carrinho está vazio.</p>
 {% endif %}
 {% endblock %}
