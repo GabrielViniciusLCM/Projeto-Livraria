@@ -19,7 +19,7 @@
                 <td>
                     <form action="{% url 'remover_item' item.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Remover</button>
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Remover</button>
                     </form>
                 </td>
             </tr>
@@ -29,7 +29,7 @@
     <br/><br/>
     <div class="text-right">
         <a href="{% url 'buscar_livros' %}" class="btn btn-secondary">Voltar ao Catálogo</a>
-        <a href="{% url 'finalizar_compra' %}" class="btn btn-primary">Finalizar Compra</a>
+        <a href="{% url 'finalizar_compra' %}" class="btn btn-primary"><i class="fas fa-check-circle"></i> Finalizar Compra</a>
     </div>
 {% else %}
     <p class="text-center">Seu carrinho está vazio.</p>
