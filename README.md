@@ -22,11 +22,9 @@ Antes de executar o projeto, verifique se você tem os seguintes softwares insta
    ```bash   
    pip install -r requirements.txt
 
-3. Configure o banco de dados:
-
-Atualize as configurações do banco de dados no arquivo settings.py:
-
-DATABASES = {
+3. Atualize as configurações do banco de dados no arquivo settings.py:
+   ```bash 
+   DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # ou 'django.db.backends.mysql'
         'NAME': 'nome_do_banco',
@@ -35,7 +33,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432', ou 3306 para MySQL
     }
-}
+   }
 
 4. Migre o banco de dados:
 
