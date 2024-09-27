@@ -19,8 +19,8 @@ Antes de executar o projeto, verifique se você tem os seguintes softwares insta
    cd livraria-gabriel
 
 2. Instale as dependências do projeto:
-   
-pip install -r requirements.txt
+   ```bash   
+   pip install -r requirements.txt
 
 3. Configure o banco de dados:
 
@@ -39,11 +39,13 @@ DATABASES = {
 
 4. Migre o banco de dados:
 
-python manage.py migrate
+   ```bash
+   python manage.py migrate
 
 5. Inicie o servidor de desenvolvimento:
 
-python manage.py runserver
+   ```bash
+   python manage.py runserver
 
 
 ## Funcionalidades
