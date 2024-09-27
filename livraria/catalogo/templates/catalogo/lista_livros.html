@@ -3,20 +3,22 @@
 {% block content %}
 <h2>Catálogo de Livros</h2>
 <form method="GET" action="{% url 'buscar_livros' %}">
-    <input type="text" name="query" placeholder="Buscar por título ou autor">
+    <input type="text" name="query" placeholder="Buscar por título, autor ou categoria">
     <button type="submit">Buscar</button>
 </form>
 {% if livros %}
     <ul>
     {% for livro in livros %}
         <li>
-            <h3>{{ livro.volumeInfo.title }}</h3>
-            <p>Autor: {{ livro.volumeInfo.authors|join:", " }}</p>
-            <p>Categoria: {{ livro.volumeInfo.categories|join:", " }}</p>
-            <p>Data de Publicação: {{ livro.volumeInfo.publishedDate }}</p>
+            <img src="{{ livro.thumbnail }}" alt="Capa do livro {{ livro.title }}" style="width:100px;">
+            <h3>{{ livro.title }}</h3>
+            <p>Autor: {{ livro.authors|join:", " }}</p>
+            <p>Categoria: {{ livro.categories|join:", " }}</p>
+            <p>Data de Publicação: {{ livro.publishedDate }}</p>
+            <a href="{% url 'detalhes_livro' livro.id %}">Ver Detalhes</a> <!-- Link para a página de detalhes -->
             <form action="{% url 'adicionar_ao_carrinho' livro.id %}" method="post">
                 {% csrf_token %}
-                <input type="hidden" name="titulo" value="{{ livro.volumeInfo.title }}">
+                <input type="hidden" name="titulo" value="{{ livro.title }}">
                 <input type="number" name="quantidade" min="1" value="1">
                 <button type="submit">Adicionar ao Carrinho</button>
             </form>
