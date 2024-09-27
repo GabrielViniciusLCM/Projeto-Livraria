@@ -15,18 +15,18 @@ from xhtml2pdf import pisa
 # livro
 def buscar_livros(request):
     query = request.GET.get('query', '')
-    filtro = request.GET.get('filtro', 'titulo')  # 'titulo' será o valor padrão
+    filtro = request.GET.get('filtro', 'titulo')  
 
-    # Se não houver uma consulta, não busque livros e retorne uma lista vazia.
+    
     if not query:
         return render(request, 'catalogo/lista_livros.html', {'livros': [], 'query': query})
 
-    # Construção da URL com base no filtro selecionado
+   
     if filtro == 'categoria':
         url = f'https://www.googleapis.com/books/v1/volumes?q=subject:{query}'
     elif filtro == 'autor':
         url = f'https://www.googleapis.com/books/v1/volumes?q=inauthor:{query}'
-    else:  # Padrão: busca por título
+    else: 
         url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{query}'
 
     response = requests.get(url)
@@ -63,17 +63,17 @@ def adicionar_ao_carrinho(request, livro_id):
             return redirect('login')
         
         titulo = request.POST.get('titulo')
-        quantidade = int(request.POST.get('quantidade', 1))  # Padrão é 1
+        quantidade = int(request.POST.get('quantidade', 1))  
 
         carrinho, criado = Carrinho.objects.get_or_create(usuario=request.user)
 
-        # Verifica se o item já está no carrinho
+        
         item_existente = ItemCarrinho.objects.filter(livro_id=livro_id, usuario=request.user).first()
         if item_existente:
             item_existente.quantidade += quantidade
             item_existente.save()
         else:
-            # Cria um novo item no carrinho
+           
             novo_item = ItemCarrinho.objects.create(
                 livro_id=livro_id,
                 titulo=titulo,
@@ -98,16 +98,17 @@ def remover_item(request, item_id):
     messages.success(request, f'O livro "{item.titulo}" foi removido do seu carrinho.')
     return redirect('ver_carrinho')
 
+#finalizar compra
 @login_required
 def finalizar_compra(request):
     carrinho = Carrinho.objects.filter(usuario=request.user).first()
     if carrinho and carrinho.itens.exists():
-        # Crie um pedido baseado no carrinho
+       
         pedido = Pedido.objects.create(usuario=request.user)
         for item in carrinho.itens.all():
             pedido.itens.add(item)
         
-        # Limpe o carrinho após finalizar a compra
+        
         carrinho.itens.clear()
         messages.success(request, 'Compra realizada com sucesso! Obrigado por comprar conosco.')
     else:
@@ -115,6 +116,7 @@ def finalizar_compra(request):
     
     return redirect('buscar_livros')
 
+#historico compras
 @login_required
 def historico_compras(request):
     pedidos = Pedido.objects.filter(usuario=request.user).order_by('-data_pedido')
@@ -126,17 +128,17 @@ def exportar_historico_pdf(request):
     template_path = 'catalogo/historico_pdf.html'
     context = {'pedidos': pedidos}
     
-    # Renderiza o template como uma string
+    
     html = render_to_string(template_path, context)
     
-    # Cria uma resposta HTTP com o PDF
+   
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="historico_compras.pdf"'
     
-    # Converte o HTML em PDF usando o xhtml2pdf
+  
     pisa_status = pisa.CreatePDF(html, dest=response)
     
-    # Verifica se houve algum erro ao gerar o PDF
+   
     if pisa_status.err:
         return HttpResponse('Erro ao gerar o PDF', status=400)
     
