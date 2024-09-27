@@ -4,21 +4,29 @@
 <h2>Catálogo de Livros</h2>
 <form method="GET" action="{% url 'buscar_livros' %}">
     <input type="text" name="query" placeholder="Buscar por título, autor ou categoria">
+    <select name="filtro">
+        <option value="titulo">Título</option>
+        <option value="autor">Autor</option>
+        <option value="categoria">Categoria</option>
+    </select>
     <button type="submit">Buscar</button>
 </form>
+
 {% if livros %}
     <ul>
     {% for livro in livros %}
         <li>
-            <img src="{{ livro.thumbnail }}" alt="Capa do livro {{ livro.title }}" style="width:100px;">
-            <h3>{{ livro.title }}</h3>
-            <p>Autor: {{ livro.authors|join:", " }}</p>
-            <p>Categoria: {{ livro.categories|join:", " }}</p>
-            <p>Data de Publicação: {{ livro.publishedDate }}</p>
-            <a href="{% url 'detalhes_livro' livro.id %}">Ver Detalhes</a> <!-- Link para a página de detalhes -->
+            <h3>{{ livro.volumeInfo.title }}</h3>
+            <img src="{{ livro.volumeInfo.imageLinks.thumbnail }}" alt="Capa do livro">
+            <p>Autor: {{ livro.volumeInfo.authors|join:", " }}</p>
+            <p>Categoria: {{ livro.volumeInfo.categories|join:", " }}</p>
+            <p>Data de Publicação: {{ livro.volumeInfo.publishedDate }}</p>
+            <p>
+                <a href="{% url 'detalhes_livro' livro.id %}">Ver detalhes</a>
+            </p>
             <form action="{% url 'adicionar_ao_carrinho' livro.id %}" method="post">
                 {% csrf_token %}
-                <input type="hidden" name="titulo" value="{{ livro.title }}">
+                <input type="hidden" name="titulo" value="{{ livro.volumeInfo.title }}">
                 <input type="number" name="quantidade" min="1" value="1">
                 <button type="submit">Adicionar ao Carrinho</button>
             </form>
@@ -26,6 +34,6 @@
     {% endfor %}
     </ul>
 {% else %}
-    <p>Nenhum livro encontrado.</p>
+    <p>Inicie uma busca para visualizar os livros disponíveis.</p>
 {% endif %}
 {% endblock %}

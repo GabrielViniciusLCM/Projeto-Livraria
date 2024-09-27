@@ -15,24 +15,26 @@ from xhtml2pdf import pisa
 # livro
 def buscar_livros(request):
     query = request.GET.get('query', '')
-    url = f'https://www.googleapis.com/books/v1/volumes?q={query}'
+    filtro = request.GET.get('filtro', 'titulo')  # 'titulo' será o valor padrão
+
+    # Se não houver uma consulta, não busque livros e retorne uma lista vazia.
+    if not query:
+        return render(request, 'catalogo/lista_livros.html', {'livros': []})
+
+    # Construção da URL com base no filtro selecionado
+    if filtro == 'categoria':
+        url = f'https://www.googleapis.com/books/v1/volumes?q=subject:{query}'
+    elif filtro == 'autor':
+        url = f'https://www.googleapis.com/books/v1/volumes?q=inauthor:{query}'
+    else:  # Padrão: busca por título
+        url = f'https://www.googleapis.com/books/v1/volumes?q=intitle:{query}'
+
     response = requests.get(url)
     dados = response.json()
-    livros = []
-
-    for item in dados.get('items', []):
-        livro_info = item['volumeInfo']
-        livro = {
-            'id': item['id'],
-            'title': livro_info.get('title', 'Título não disponível'),
-            'authors': livro_info.get('authors', []),
-            'categories': livro_info.get('categories', []),
-            'publishedDate': livro_info.get('publishedDate', 'Data não disponível'),
-            'thumbnail': livro_info.get('imageLinks', {}).get('thumbnail', ''),  # Adiciona a capa
-        }
-        livros.append(livro)
+    livros = dados.get('items', [])
 
     return render(request, 'catalogo/lista_livros.html', {'livros': livros})
+
 
 def detalhes_livro(request, livro_id):
     url = f'https://www.googleapis.com/books/v1/volumes/{livro_id}'
