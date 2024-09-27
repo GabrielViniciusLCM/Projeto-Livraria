@@ -11,12 +11,14 @@
         </select>
     </div>
     <div class="form-group mx-sm-3 mb-2">
-        <input type="text" class="form-control" name="query" placeholder="Buscar...">
+        <input type="text" class="form-control" name="query" placeholder="Buscar..." value="{{ query }}">
     </div>
     <button type="submit" class="btn btn-primary mb-2">Buscar</button>
 </form>
 
-{% if livros %}
+{% if not query %}
+    <p class="text-center">Para procurar os livros disponíveis, insira um termo de pesquisa e clique em buscar.</p>
+{% elif livros %}
     <div class="row">
         {% for livro in livros %}
         <div class="col-md-4">

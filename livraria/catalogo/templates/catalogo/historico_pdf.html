@@ -71,6 +71,7 @@
 </head>
 <body>
     <h1>Histórico de Compras</h1>
+    <p><strong>Usuário:</strong> {{ pedidos.first.usuario.username }}</p>
     {% if pedidos %}
         <table>
             <tr>
@@ -96,5 +97,6 @@
     {% else %}
         <p>Você ainda não realizou nenhuma compra.</p>
     {% endif %}
+    <p class="copyright">© 2024 Livraria Gabriel</p>
 </body>
 </html>

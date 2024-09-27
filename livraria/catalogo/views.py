@@ -19,7 +19,7 @@ def buscar_livros(request):
 
     # Se não houver uma consulta, não busque livros e retorne uma lista vazia.
     if not query:
-        return render(request, 'catalogo/lista_livros.html', {'livros': []})
+        return render(request, 'catalogo/lista_livros.html', {'livros': [], 'query': query})
 
     # Construção da URL com base no filtro selecionado
     if filtro == 'categoria':
@@ -33,8 +33,7 @@ def buscar_livros(request):
     dados = response.json()
     livros = dados.get('items', [])
 
-    return render(request, 'catalogo/lista_livros.html', {'livros': livros})
-
+    return render(request, 'catalogo/lista_livros.html', {'livros': livros, 'query': query})
 
 def detalhes_livro(request, livro_id):
     url = f'https://www.googleapis.com/books/v1/volumes/{livro_id}'
